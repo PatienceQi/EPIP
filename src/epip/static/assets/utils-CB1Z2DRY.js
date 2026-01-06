@@ -1,0 +1,1 @@
+function a(t,e,n="en-US"){const r=t instanceof Date?t:new Date(t);if(Number.isNaN(r.getTime()))return"";const m=e;return new Intl.DateTimeFormat(n,m).format(r)}function i(t,e,n="en-US"){const r=typeof t=="number"?t:Number(t);return Number.isFinite(r)?new Intl.NumberFormat(n,{maximumFractionDigits:2,...e}).format(r):""}export{i as a,a as f};

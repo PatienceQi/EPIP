@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "epip"
+version = "0.1.0"
+description = "Enterprise Policy Insight Platform"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "neo4j>=5.0",
+    "sentence-transformers>=2.0",
+    "fastapi>=0.100",
+    "uvicorn>=0.20",
+    "redis>=4.0",
+    "structlog>=23.0",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "httpx>=0.25",
+    "chardet>=5.0",
+    "pyarrow>=14.0",
+    "pypdf>=4.0",
+    "lightrag-hku>=1.0.0",
+    "openai>=1.0",
+    "tiktoken>=0.5",
+    "click>=8.0",
+    "pyyaml>=6.0",
+    "python-multipart>=0.0.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21",
+    "ruff>=0.1",
+    "mypy>=1.0",
+    "testcontainers>=3.0",
+]
+
+[project.scripts]
+epip-kg = "scripts.kg_cli:cli"
+epip = "scripts.query_cli:cli"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

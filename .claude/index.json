@@ -1,0 +1,303 @@
+{
+  "project_name": "EPIP",
+  "description": "Enterprise Policy Insight Platform - 企业政策洞察平台",
+  "version": "0.1.0",
+  "last_scan": "2026-01-06T19:49:12+0800",
+  "scan_coverage": {
+    "total_files_estimated": 150,
+    "scanned_files": 150,
+    "coverage_percentage": 100,
+    "ignored_patterns": [
+      ".venv/**",
+      "__MACOSX/**",
+      "node_modules/**",
+      ".git/**",
+      "*.pyc",
+      "__pycache__/**",
+      "*.log",
+      "dist/**",
+      "build/**"
+    ]
+  },
+  "modules": [
+    {
+      "path": "src/epip/api",
+      "language": "Python",
+      "role": "REST API 路由、中间件、依赖注入",
+      "entry_points": [
+        "src/epip/main.py",
+        "src/epip/api/routes.py"
+      ],
+      "key_files": [
+        "src/epip/api/middleware/tenant.py",
+        "src/epip/api/middleware/metrics.py",
+        "src/epip/api/dependencies.py",
+        "src/epip/api/schemas/__init__.py"
+      ],
+      "test_directory": "tests/integration/test_api.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/core",
+      "language": "Python",
+      "role": "KG 构建、查询引擎、幻觉检测、实体/关系提取",
+      "entry_points": [
+        "src/epip/core/kg_builder.py",
+        "src/epip/core/query_engine.py",
+        "src/epip/core/hallucination.py"
+      ],
+      "key_files": [
+        "src/epip/core/entity_extractor.py",
+        "src/epip/core/relation_extractor.py",
+        "src/epip/core/kg_quality.py",
+        "src/epip/core/llm_backend.py"
+      ],
+      "test_directory": "tests/unit/test_kg_builder.py",
+      "config_files": ["src/epip/config.py"],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/db",
+      "language": "Python",
+      "role": "Neo4j 与 Redis 客户端封装",
+      "entry_points": [
+        "src/epip/db/neo4j_client.py",
+        "src/epip/db/redis_client.py"
+      ],
+      "key_files": [],
+      "test_directory": "tests/integration/test_component_integration.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/query",
+      "language": "Python",
+      "role": "查询解析、Cypher 生成、实体链接",
+      "entry_points": [
+        "src/epip/query/parser.py",
+        "src/epip/query/cypher.py",
+        "src/epip/query/executor.py"
+      ],
+      "key_files": [
+        "src/epip/query/linker.py",
+        "src/epip/query/planner.py",
+        "src/epip/query/algorithms.py"
+      ],
+      "test_directory": "tests/unit/test_query_engine.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/reasoning",
+      "language": "Python",
+      "role": "ReAct 推理循环、问题分解、结果聚合",
+      "entry_points": [
+        "src/epip/reasoning/react.py",
+        "src/epip/reasoning/decomposer.py"
+      ],
+      "key_files": [
+        "src/epip/reasoning/aggregator.py"
+      ],
+      "test_directory": "tests/unit/test_react_reasoning.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/verification",
+      "language": "Python",
+      "role": "事实验证、溯源、推理轨迹记录",
+      "entry_points": [
+        "src/epip/verification/fact_verifier.py",
+        "src/epip/verification/trace.py"
+      ],
+      "key_files": [
+        "src/epip/verification/fact_extractor.py",
+        "src/epip/verification/provenance.py",
+        "src/epip/verification/path_analyzer.py",
+        "src/epip/verification/report.py"
+      ],
+      "test_directory": "tests/unit/test_fact_verification.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/visualization",
+      "language": "Python",
+      "role": "可视化数据生成（图谱、轨迹、验证报告）",
+      "entry_points": [
+        "src/epip/visualization/data_generator.py"
+      ],
+      "key_files": [],
+      "test_directory": "tests/unit/test_visualization.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/admin",
+      "language": "Python",
+      "role": "多租户管理、RBAC、审计日志",
+      "entry_points": [
+        "src/epip/admin/tenant.py",
+        "src/epip/admin/rbac.py"
+      ],
+      "key_files": [
+        "src/epip/admin/audit.py"
+      ],
+      "test_directory": "tests/unit/test_multi_tenancy.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/cache",
+      "language": "Python",
+      "role": "查询缓存、指纹计算",
+      "entry_points": [
+        "src/epip/cache/query_cache.py",
+        "src/epip/cache/fingerprint.py"
+      ],
+      "key_files": [],
+      "test_directory": "tests/unit/test_query_cache.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/monitoring",
+      "language": "Python",
+      "role": "Prometheus 指标、健康检查",
+      "entry_points": [
+        "src/epip/monitoring/metrics.py"
+      ],
+      "key_files": [],
+      "test_directory": "tests/unit/test_monitoring.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "src/epip/benchmark",
+      "language": "Python",
+      "role": "性能基准测试",
+      "entry_points": [
+        "src/epip/benchmark/query_benchmark.py"
+      ],
+      "key_files": [],
+      "test_directory": "tests/benchmark/test_performance.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    },
+    {
+      "path": "frontend",
+      "language": "TypeScript",
+      "role": "React 前端应用（仪表盘、查询、可视化、管理）",
+      "entry_points": [
+        "frontend/src/main.tsx",
+        "frontend/src/App.tsx"
+      ],
+      "key_files": [
+        "frontend/src/pages/Dashboard/index.tsx",
+        "frontend/src/pages/Query/index.tsx",
+        "frontend/src/pages/Visualization/index.tsx",
+        "frontend/src/pages/Admin/index.tsx"
+      ],
+      "test_directory": null,
+      "config_files": [
+        "frontend/package.json",
+        "frontend/tsconfig.json",
+        "frontend/vite.config.ts"
+      ],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": false,
+        "has_docs": true,
+        "missing": ["测试文件"]
+      }
+    },
+    {
+      "path": "scripts",
+      "language": "Python",
+      "role": "CLI 工具（数据导入、质量评估、基准测试）",
+      "entry_points": [
+        "scripts/import_data.py",
+        "scripts/kg_cli.py",
+        "scripts/query_cli.py"
+      ],
+      "key_files": [
+        "scripts/evaluate_kg_quality.py",
+        "scripts/benchmark_performance.py",
+        "scripts/analyze_relations.py"
+      ],
+      "test_directory": "tests/unit/test_kg_cli.py",
+      "config_files": [],
+      "coverage": {
+        "has_entry": true,
+        "has_tests": true,
+        "has_docs": true,
+        "missing": []
+      }
+    }
+  ],
+  "gaps": [
+    "前端模块缺少测试文件"
+  ],
+  "next_steps": [
+    "补充前端单元测试与集成测试",
+    "完善 API 文档与示例",
+    "添加性能优化建议"
+  ],
+  "truncated": false
+}

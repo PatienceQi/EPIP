@@ -1,0 +1,28 @@
+# This file mirrors the dependencies declared in pyproject.toml.
+# Update pyproject.toml and regenerate this file when dependencies change.
+
+# Core dependencies
+pandas>=2.0
+neo4j>=5.0
+sentence-transformers>=2.0
+fastapi>=0.100
+uvicorn>=0.20
+redis>=4.0
+structlog>=23.0
+pydantic>=2.0
+pydantic-settings>=2.0
+httpx>=0.25
+chardet>=5.0
+pyarrow>=14.0
+pypdf>=4.0
+python-multipart>=0.0.6
+
+# Development dependencies (optional extra: dev)
+pytest>=7.0
+pytest-cov>=4.0
+pytest-asyncio>=0.21
+ruff>=0.1
+mypy>=1.0
+testcontainers>=3.0
+lightrag-hku>=1.4
+openai>=1.0
