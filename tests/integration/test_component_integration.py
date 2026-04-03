@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 import numpy as np
 import pytest
@@ -276,7 +276,7 @@ async def test_visualization_with_verification() -> None:
     store = VisualizationMemoryStore()
     store.set_report(report)
 
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
     trace = ReasoningTrace(
         trace_id="trace-vis",
         query="Explain visualization flow",

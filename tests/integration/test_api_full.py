@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 import pytest
 from fastapi.testclient import TestClient
@@ -24,7 +24,7 @@ from epip.visualization import VisualizationDataGenerator
 
 
 def _build_trace() -> ReasoningTrace:
-    now = datetime(2024, 5, 18, tzinfo=UTC)
+    now = datetime(2024, 5, 18, tzinfo=timezone.utc)
     nodes = [
         TraceNode(
             node_id="node-1",

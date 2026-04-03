@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -129,16 +129,16 @@ def _test_client_dependencies() -> dict[str, object]:
         name="Test Tenant",
         status=TenantStatus.ACTIVE,
         config={},
-        created_at=datetime.now(UTC),
-        updated_at=datetime.now(UTC),
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc),
     )
     admin_tenant = Tenant(
         tenant_id="admin-tenant",
         name="Admin Tenant",
         status=TenantStatus.ACTIVE,
         config={"role": "admin"},
-        created_at=datetime.now(UTC),
-        updated_at=datetime.now(UTC),
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc),
     )
 
     async def seed_tenants() -> None:
