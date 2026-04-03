@@ -9,6 +9,7 @@
 
 # macOS
 .DS_Store
+__MACOSX/
 
 # Python
 __pycache__/
