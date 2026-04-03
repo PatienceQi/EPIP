@@ -143,6 +143,7 @@ async def serve_spa_root() -> FileResponse:
 async def favicon():
     """Return empty favicon to avoid 404."""
     from fastapi.responses import Response
+
     return Response(content=b"", media_type="image/x-icon")
 
 

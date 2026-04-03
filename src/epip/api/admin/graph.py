@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 
 from epip.admin import TenantContext
@@ -261,10 +261,7 @@ async def export_graph(
             unique_relationships.append(rel)
 
     export_data = {
-        "nodes": [
-            {"id": n.id, "labels": n.labels, "properties": n.properties}
-            for n in nodes
-        ],
+        "nodes": [{"id": n.id, "labels": n.labels, "properties": n.properties} for n in nodes],
         "relationships": [
             {
                 "id": r.id,
@@ -279,9 +276,7 @@ async def export_graph(
 
     return JSONResponse(
         content=export_data,
-        headers={
-            "Content-Disposition": f"attachment; filename=graph_export.{request.format}"
-        },
+        headers={"Content-Disposition": f"attachment; filename=graph_export.{request.format}"},
     )
 
 
@@ -300,9 +295,7 @@ async def reindex_database(
         for label in labels:
             try:
                 # Create index on 'name' property if it exists
-                await neo4j.execute_write(
-                    f"CREATE INDEX IF NOT EXISTS FOR (n:{label}) ON (n.name)"
-                )
+                await neo4j.execute_write(f"CREATE INDEX IF NOT EXISTS FOR (n:{label}) ON (n.name)")
                 index_count += 1
             except Exception:
                 pass  # Index might already exist or property doesn't exist
@@ -370,7 +363,9 @@ async def graph_health(
         "stats": {
             "node_count": stats.node_count if stats else 0,
             "relationship_count": stats.relationship_count if stats else 0,
-        } if stats else None,
+        }
+        if stats
+        else None,
     }
 
 

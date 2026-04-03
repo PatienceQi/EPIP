@@ -137,11 +137,7 @@ async def _snapshot_from_networkx(storage) -> _GraphSnapshot:
 
     edges: list[tuple[str, str, dict[str, Any]]] = []
     for source, target, attributes in graph.edges(data=True):
-        relation_type = (
-            attributes.get("relation_type")
-            or attributes.get("type")
-            or "RELATED_TO"
-        )
+        relation_type = attributes.get("relation_type") or attributes.get("type") or "RELATED_TO"
         confidence = float(attributes.get("confidence") or 0.0)
         edges.append(
             (
@@ -225,9 +221,7 @@ class SubgraphAnalyzer:
         snapshot = await _get_graph_snapshot(kg_builder)
         adjacency = snapshot.adjacency()
         isolates = [
-            snapshot.node_name(node_id)
-            for node_id, neighbors in adjacency.items()
-            if not neighbors
+            snapshot.node_name(node_id) for node_id, neighbors in adjacency.items() if not neighbors
         ]
         isolates.sort()
         return isolates
@@ -283,9 +277,7 @@ class SubgraphAnalyzer:
         return components
 
     @staticmethod
-    def _select_representative(
-        component: list[str], adjacency: dict[str, set[str]]
-    ) -> str | None:
+    def _select_representative(component: list[str], adjacency: dict[str, set[str]]) -> str | None:
         if not component:
             return None
         return max(component, key=lambda node: len(adjacency.get(node, ())))

@@ -166,10 +166,14 @@ class Neo4jClient:
 
         rel_type_counts_result = await self.execute_read(
             "CALL db.relationshipTypes() YIELD relationshipType "
-            "CALL { WITH relationshipType MATCH ()-[r]->() WHERE type(r) = relationshipType RETURN count(r) as count } "
+            "CALL { WITH relationshipType "
+            "MATCH ()-[r]->() WHERE type(r) = relationshipType "
+            "RETURN count(r) as count } "
             "RETURN relationshipType, count"
         )
-        stats.relationship_type_counts = {r["relationshipType"]: r["count"] for r in rel_type_counts_result}
+        stats.relationship_type_counts = {
+            r["relationshipType"]: r["count"] for r in rel_type_counts_result
+        }
 
         return stats
 
@@ -201,8 +205,7 @@ class Neo4jClient:
         """
         result = await self.execute_read(query, params)
         return [
-            GraphNode(id=r["id"], labels=r["labels"], properties=r["properties"])
-            for r in result
+            GraphNode(id=r["id"], labels=r["labels"], properties=r["properties"]) for r in result
         ]
 
     async def get_node(self, node_id: str) -> GraphNode | None:
@@ -278,7 +281,9 @@ class Neo4jClient:
             for r in result
         ]
 
-    async def expand_node(self, node_id: str, depth: int = 1) -> tuple[list[GraphNode], list[GraphRelationship]]:
+    async def expand_node(
+        self, node_id: str, depth: int = 1
+    ) -> tuple[list[GraphNode], list[GraphRelationship]]:
         """Expand a node to get its neighbors up to a certain depth."""
         query = f"""
             MATCH path = (n)-[*1..{depth}]-(m) WHERE elementId(n) = $id
@@ -305,7 +310,10 @@ class Neo4jClient:
             return [], []
 
         r = result[0]
-        nodes = [GraphNode(id=n["id"], labels=n["labels"], properties=n["properties"]) for n in r.get("node_data", [])]
+        nodes = [
+            GraphNode(id=n["id"], labels=n["labels"], properties=n["properties"])
+            for n in r.get("node_data", [])
+        ]
         relationships = [
             GraphRelationship(
                 id=rel["id"],
@@ -366,6 +374,5 @@ class Neo4jClient:
         """
         result = await self.execute_read(query, {"query": query_text, "limit": limit})
         return [
-            GraphNode(id=r["id"], labels=r["labels"], properties=r["properties"])
-            for r in result
+            GraphNode(id=r["id"], labels=r["labels"], properties=r["properties"]) for r in result
         ]

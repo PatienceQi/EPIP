@@ -25,6 +25,7 @@ def _get_visualization_memory_store():
     global _visualization_store
     if _visualization_store is None:
         from epip.api.visualization import VisualizationMemoryStore
+
         _visualization_store = VisualizationMemoryStore()
     return _visualization_store
 

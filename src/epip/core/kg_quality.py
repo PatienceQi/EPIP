@@ -50,18 +50,12 @@ class QualityThresholds:
     def from_mapping(cls, data: Mapping[str, Any]) -> QualityThresholds:
         defaults = cls()
         return cls(
-            entity_precision=float(
-                data.get("entity_precision", defaults.entity_precision)
-            ),
+            entity_precision=float(data.get("entity_precision", defaults.entity_precision)),
             entity_recall=float(data.get("entity_recall", defaults.entity_recall)),
-            relation_coverage=float(
-                data.get("relation_coverage", defaults.relation_coverage)
-            ),
+            relation_coverage=float(data.get("relation_coverage", defaults.relation_coverage)),
             graph_density=float(data.get("graph_density", defaults.graph_density)),
             min_avg_degree=float(data.get("min_avg_degree", defaults.min_avg_degree)),
-            max_isolated_ratio=float(
-                data.get("max_isolated_ratio", defaults.max_isolated_ratio)
-            ),
+            max_isolated_ratio=float(data.get("max_isolated_ratio", defaults.max_isolated_ratio)),
         )
 
     def to_dict(self) -> dict[str, float]:
@@ -261,10 +255,7 @@ class KGQualityEvaluator:
         return output_path
 
     def _evaluate_entities(self, snapshot: _GraphSnapshot) -> EntityQualityMetrics:
-        actual_entities = {
-            snapshot.node_name(node_id).strip()
-            for node_id in snapshot.nodes
-        }
+        actual_entities = {snapshot.node_name(node_id).strip() for node_id in snapshot.nodes}
         actual_entities.discard("")
         expected_entities = self._ground_truth.entities
         true_positive = len(actual_entities & expected_entities)
@@ -297,9 +288,7 @@ class KGQualityEvaluator:
             )
             for source, target, edge_payload in snapshot.edges
         }
-        clean_actual = {
-            rel for rel in actual_relations if rel[0] and rel[2]
-        }
+        clean_actual = {rel for rel in actual_relations if rel[0] and rel[2]}
         expected = self._ground_truth.relations
         matching = len(clean_actual & expected)
         expected_total = len(expected)
@@ -387,8 +376,7 @@ class KGQualityEvaluator:
             )
         if entity_metrics.recall < thresholds.entity_recall:
             issues.append(
-                f"Entity recall {entity_metrics.recall:.2f} below "
-                f"{thresholds.entity_recall:.2f}"
+                f"Entity recall {entity_metrics.recall:.2f} below {thresholds.entity_recall:.2f}"
             )
         if relation_metrics.coverage < thresholds.relation_coverage:
             issues.append(
@@ -397,8 +385,7 @@ class KGQualityEvaluator:
             )
         if graph_metrics.density < thresholds.graph_density:
             issues.append(
-                f"Graph density {graph_metrics.density:.4f} below "
-                f"{thresholds.graph_density:.4f}"
+                f"Graph density {graph_metrics.density:.4f} below {thresholds.graph_density:.4f}"
             )
         if graph_metrics.avg_degree < thresholds.min_avg_degree:
             issues.append(

@@ -143,7 +143,6 @@ async def test_graph_validator_fix_issues_bridges_components():
     assert fixed == 1
     edges = graph.edges(data=True)
     assert any(
-        data["relation_type"] == "LINKED_WITH"
-        and {source, target} in ({"1", "3"}, {"2", "3"})
+        data["relation_type"] == "LINKED_WITH" and {source, target} in ({"1", "3"}, {"2", "3"})
         for source, target, data in edges
     )

@@ -124,9 +124,7 @@ def relation() -> None:
 @click.argument("target")
 @click.option("--type", "relation_type", required=True, help="Relation type label.")
 @click.option("--attr", "-a", multiple=True, help="Attribute key=value pairs.")
-def relation_add(
-    source: str, target: str, relation_type: str, attr: tuple[str, ...]
-) -> None:
+def relation_add(source: str, target: str, relation_type: str, attr: tuple[str, ...]) -> None:
     attrs = _parse_attrs(attr)
     success = _run(manager.add_relation(source, target, relation_type, **attrs))
     if not success:

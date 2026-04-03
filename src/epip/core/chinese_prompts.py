@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """自定义 LightRAG 提取 prompt，针对中文数据和 qwen2.5 模型优化。"""
 
 from lightrag.prompt import PROMPTS
@@ -97,16 +98,16 @@ def apply_chinese_prompts():
 def get_chinese_entity_types() -> list[str]:
     """返回适合中文政策数据的实体类型。"""
     return [
-        "政策",      # Policy
-        "组织",      # Organization
-        "人物",      # Person
-        "地点",      # Location
-        "日期",      # Date
-        "指标",      # Metric
-        "疾病",      # Disease
-        "预算",      # Budget
-        "法规",      # Regulation
-        "项目",      # Project
-        "设施",      # Facility
-        "服务",      # Service
+        "政策",  # Policy
+        "组织",  # Organization
+        "人物",  # Person
+        "地点",  # Location
+        "日期",  # Date
+        "指标",  # Metric
+        "疾病",  # Disease
+        "预算",  # Budget
+        "法规",  # Regulation
+        "项目",  # Project
+        "设施",  # Facility
+        "服务",  # Service
     ]

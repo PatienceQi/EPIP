@@ -37,7 +37,10 @@ core_router = APIRouter(prefix="/api", tags=["query"])
 )
 async def api_health() -> schemas.HealthResponse:
     """Simple health check for frontend."""
-    return schemas.HealthResponse(status="healthy", services=schemas.ServiceStatus(neo4j="up", redis="up"))
+    return schemas.HealthResponse(
+        status="healthy",
+        services=schemas.ServiceStatus(neo4j="up", redis="up"),
+    )
 
 
 @core_router.get(
@@ -77,10 +80,10 @@ async def get_status(settings: Settings = Depends(get_settings)) -> schemas.Stat
                             "source": "api",
                             "intent": "FACTUAL",
                             "complexity": "MEDIUM",
-                        }
+                        },
                     }
                 }
-            }
+            },
         }
     },
 )

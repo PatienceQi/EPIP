@@ -54,15 +54,11 @@ class ReportGenerator:
         answer_id: str = "answer-unknown",
     ) -> VerificationReport:
         total = len(results)
-        verified = sum(
-            1 for result in results if result.status is VerificationStatus.VERIFIED
-        )
+        verified = sum(1 for result in results if result.status is VerificationStatus.VERIFIED)
         partial = sum(
             1 for result in results if result.status is VerificationStatus.PARTIALLY_VERIFIED
         )
-        unverified = sum(
-            1 for result in results if result.status is VerificationStatus.UNVERIFIED
-        )
+        unverified = sum(1 for result in results if result.status is VerificationStatus.UNVERIFIED)
         contradicted = sum(
             1 for result in results if result.status is VerificationStatus.CONTRADICTED
         )

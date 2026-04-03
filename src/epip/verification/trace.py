@@ -69,7 +69,7 @@ class TraceRecorder:
         self._trace_counter = 0
         self._node_id_factory = node_id_factory or (lambda index: f"node-{index}")
         self._trace_id_factory = trace_id_factory or (lambda index: f"trace-{index}")
-        self._time_provider = time_provider or (lambda: datetime.now(UTC))
+        self._time_provider = time_provider or (lambda: datetime.now(timezone.utc))
 
     def record_node(
         self,

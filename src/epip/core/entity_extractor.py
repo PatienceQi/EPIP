@@ -271,10 +271,12 @@ class EntityReportGenerator:
 
     async def generate_report(self, kg_builder: KGBuilder) -> EntityReport:
         stats = await kg_builder.get_statistics()
-        sample_entities, low_confidence_count, disambiguation_count = (
-            await self._collect_entity_samples(
-                kg_builder, limit=max(self.config.report_sample_size, 0)
-            )
+        (
+            sample_entities,
+            low_confidence_count,
+            disambiguation_count,
+        ) = await self._collect_entity_samples(
+            kg_builder, limit=max(self.config.report_sample_size, 0)
         )
         return EntityReport(
             total_entities=stats.total_entities,
@@ -463,9 +465,7 @@ class EntityEvaluator:
         true_positives = len(ground_truth_set & extracted_set)
         precision = true_positives / len(extracted_set) if extracted_set else 0.0
         recall = true_positives / len(ground_truth_set) if ground_truth_set else 0.0
-        f1_score = (
-            2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
-        )
+        f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
         confusion = self._build_confusion_matrix(extracted, truth)
         return EvaluationResult(
             precision=precision,

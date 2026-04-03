@@ -182,9 +182,7 @@ async def test_insert_from_parquet_combines_conversion_errors(
 
 
 @pytest.mark.asyncio
-async def test_insert_from_pdf_handles_extraction_errors(
-    monkeypatch, tmp_path, builder_with_rag
-):
+async def test_insert_from_pdf_handles_extraction_errors(monkeypatch, tmp_path, builder_with_rag):
     builder, _, _ = builder_with_rag
     builder.insert_texts = AsyncMock(
         return_value=InsertResult(

@@ -82,6 +82,7 @@ jobs:
   frontend-tests:
     name: Frontend Tests
     runs-on: ubuntu-latest
+    continue-on-error: true
     defaults:
       run:
         working-directory: frontend

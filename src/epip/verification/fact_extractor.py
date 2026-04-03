@@ -201,9 +201,10 @@ class FactExtractor:
             return FactType.ATTRIBUTE
 
         lowered = normalized.lower()
-        if _COMPOSITE_HINT_PATTERN.search(normalized) and len(
-            [p for p in _COMPOSITE_SPLIT_PATTERN.split(normalized) if p.strip()]
-        ) > 1:
+        if (
+            _COMPOSITE_HINT_PATTERN.search(normalized)
+            and len([p for p in _COMPOSITE_SPLIT_PATTERN.split(normalized) if p.strip()]) > 1
+        ):
             return FactType.COMPOSITE
         if _TEMPORAL_PATTERN.search(normalized):
             return FactType.TEMPORAL

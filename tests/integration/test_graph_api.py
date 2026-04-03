@@ -1,3 +1,4 @@
+# ruff: noqa: F811
 """Integration tests for the graph browsing API."""
 
 from __future__ import annotations
@@ -8,7 +9,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from epip.db.neo4j_client import GraphNode, GraphRelationship, GraphStats
-from tests.conftest import mock_neo4j_client  # noqa: F401
+from tests.conftest import mock_neo4j_client  # noqa: F401,F811
 
 
 def test_list_nodes_returns_nodes(api_client: TestClient, mock_neo4j_client: MagicMock) -> None:
@@ -18,7 +19,9 @@ def test_list_nodes_returns_nodes(api_client: TestClient, mock_neo4j_client: Mag
     ]
     mock_neo4j_client.get_nodes.return_value = nodes
 
-    response = api_client.get("/api/graph/nodes", params={"label": "Policy", "limit": 2, "offset": 5})
+    response = api_client.get(
+        "/api/graph/nodes", params={"label": "Policy", "limit": 2, "offset": 5}
+    )
 
     assert response.status_code == 200
     body = response.json()
@@ -43,7 +46,9 @@ def test_get_node_returns_node(api_client: TestClient, mock_neo4j_client: MagicM
     mock_neo4j_client.get_node.assert_awaited_once_with("node-1")
 
 
-def test_get_node_returns_404_when_missing(api_client: TestClient, mock_neo4j_client: MagicMock) -> None:
+def test_get_node_returns_404_when_missing(
+    api_client: TestClient, mock_neo4j_client: MagicMock
+) -> None:
     mock_neo4j_client.get_node.return_value = None
 
     response = api_client.get("/api/graph/nodes/missing")
@@ -88,7 +93,9 @@ def test_get_node_relationships_returns_relationships(
     )
 
 
-def test_expand_node_returns_graph_data(api_client: TestClient, mock_neo4j_client: MagicMock) -> None:
+def test_expand_node_returns_graph_data(
+    api_client: TestClient, mock_neo4j_client: MagicMock
+) -> None:
     nodes = [
         GraphNode(id="node-2", labels=["Policy"], properties={"name": "Beta"}),
     ]
@@ -122,7 +129,9 @@ def test_list_labels_returns_labels(api_client: TestClient, mock_neo4j_client: M
     mock_neo4j_client.get_labels.assert_awaited_once()
 
 
-def test_list_relationship_types_returns_types(api_client: TestClient, mock_neo4j_client: MagicMock) -> None:
+def test_list_relationship_types_returns_types(
+    api_client: TestClient, mock_neo4j_client: MagicMock
+) -> None:
     mock_neo4j_client.get_relationship_types.return_value = ["RELATED_TO", "MENTIONS"]
 
     response = api_client.get("/api/graph/relationship-types")
@@ -174,7 +183,9 @@ def test_execute_cypher_read_query(api_client: TestClient, mock_neo4j_client: Ma
     result = [{"name": "Alpha"}]
     mock_neo4j_client.execute_read.return_value = result
 
-    response = api_client.post("/api/graph/cypher", json={"query": query, "parameters": {"limit": 1}})
+    response = api_client.post(
+        "/api/graph/cypher", json={"query": query, "parameters": {"limit": 1}}
+    )
 
     assert response.status_code == 200
     body = response.json()
@@ -225,7 +236,9 @@ def test_execute_cypher_returns_error_on_failure(
 ) -> None:
     mock_neo4j_client.execute_read.side_effect = RuntimeError("syntax error")
 
-    response = api_client.post("/api/graph/cypher", json={"query": "MATCH (n) RETURN n", "parameters": {}})
+    response = api_client.post(
+        "/api/graph/cypher", json={"query": "MATCH (n) RETURN n", "parameters": {}}
+    )
 
     assert response.status_code == 400
     assert "syntax error" in response.json()["detail"]

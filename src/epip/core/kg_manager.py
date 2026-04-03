@@ -144,9 +144,7 @@ class KGManager:
         )
         return success
 
-    async def add_relation(
-        self, source: str, target: str, rel_type: str, **attrs: Any
-    ) -> bool:
+    async def add_relation(self, source: str, target: str, rel_type: str, **attrs: Any) -> bool:
         async with self._lock:
             if source not in self._entities or target not in self._entities:
                 success = False
@@ -171,9 +169,7 @@ class KGManager:
         )
         return success
 
-    async def delete_relation(
-        self, source: str, target: str, rel_type: str | None = None
-    ) -> bool:
+    async def delete_relation(self, source: str, target: str, rel_type: str | None = None) -> bool:
         async with self._lock:
             before = len(self._relations)
             self._relations = [
@@ -426,9 +422,7 @@ class BatchProcessor:
         op_type = operation.operation
         if op_type is OperationType.ADD_ENTITY:
             attrs = _extract_attributes(payload)
-            return await self.manager.add_entity(
-                payload["name"], payload["entity_type"], **attrs
-            )
+            return await self.manager.add_entity(payload["name"], payload["entity_type"], **attrs)
         if op_type is OperationType.DELETE_ENTITY:
             return await self.manager.delete_entity(payload["name"])
         if op_type is OperationType.UPDATE_ENTITY:

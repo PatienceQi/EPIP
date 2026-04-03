@@ -137,9 +137,7 @@ class VisualizationExportRequest(BaseModel):
     """Payload accepted by the export endpoint."""
 
     graph: dict[str, Any] = Field(..., description="Graph payload produced by the generator")
-    format: Literal["json", "svg", "markdown"] = Field(
-        "json", description="Desired export format"
-    )
+    format: Literal["json", "svg", "markdown"] = Field("json", description="Desired export format")
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -207,7 +205,7 @@ def _graph_to_svg(graph: dict[str, Any]) -> str:
     nodes = stats.get("nodes", len(graph.get("nodes", [])))
     edges = stats.get("edges", len(graph.get("links", [])))
     return (
-        "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"200\">"
+        '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">'
         f"<text x='20' y='40'>Nodes: {nodes}</text>"
         f"<text x='20' y='80'>Edges: {edges}</text>"
         "</svg>"

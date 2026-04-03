@@ -1,3 +1,4 @@
+# ruff: noqa: F811
 """Integration tests for the admin graph management API."""
 
 from __future__ import annotations
@@ -8,7 +9,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from epip.db.neo4j_client import GraphNode, GraphRelationship, GraphStats
-from tests.conftest import mock_neo4j_client  # noqa: F401
+from tests.conftest import mock_neo4j_client  # noqa: F401,F811
 
 
 def test_admin_create_node_creates_node(admin_api_client: TestClient, mock_neo4j_client) -> None:
@@ -27,10 +28,14 @@ def test_admin_create_node_creates_node(admin_api_client: TestClient, mock_neo4j
     assert body["id"] == "node-1"
     assert body["labels"] == ["Policy"]
     assert body["properties"]["name"] == "Alpha"
-    mock_neo4j_client.create_node.assert_awaited_once_with(labels=["Policy"], properties={"name": "Alpha"})
+    mock_neo4j_client.create_node.assert_awaited_once_with(
+        labels=["Policy"], properties={"name": "Alpha"}
+    )
 
 
-def test_admin_update_node_returns_updated_node(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_update_node_returns_updated_node(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.update_node = AsyncMock(
         return_value=GraphNode(id="node-1", labels=["Policy"], properties={"status": "updated"})
     )
@@ -43,10 +48,14 @@ def test_admin_update_node_returns_updated_node(admin_api_client: TestClient, mo
     assert response.status_code == 200
     body = response.json()
     assert body["properties"]["status"] == "updated"
-    mock_neo4j_client.update_node.assert_awaited_once_with("node-1", properties={"status": "updated"})
+    mock_neo4j_client.update_node.assert_awaited_once_with(
+        "node-1", properties={"status": "updated"}
+    )
 
 
-def test_admin_update_node_returns_404_when_missing(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_update_node_returns_404_when_missing(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.update_node = AsyncMock(return_value=None)
 
     response = admin_api_client.put(
@@ -56,10 +65,14 @@ def test_admin_update_node_returns_404_when_missing(admin_api_client: TestClient
 
     assert response.status_code == 404
     assert response.json()["detail"] == "Node not found"
-    mock_neo4j_client.update_node.assert_awaited_once_with("missing", properties={"status": "missing"})
+    mock_neo4j_client.update_node.assert_awaited_once_with(
+        "missing", properties={"status": "missing"}
+    )
 
 
-def test_admin_delete_node_confirms_deletion(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_delete_node_confirms_deletion(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.delete_node = AsyncMock(return_value=True)
 
     response = admin_api_client.delete(
@@ -71,7 +84,9 @@ def test_admin_delete_node_confirms_deletion(admin_api_client: TestClient, mock_
     mock_neo4j_client.delete_node.assert_awaited_once_with("node-1")
 
 
-def test_admin_delete_node_returns_404_when_missing(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_delete_node_returns_404_when_missing(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.delete_node = AsyncMock(return_value=False)
 
     response = admin_api_client.delete(
@@ -83,7 +98,9 @@ def test_admin_delete_node_returns_404_when_missing(admin_api_client: TestClient
     mock_neo4j_client.delete_node.assert_awaited_once_with("missing")
 
 
-def test_admin_create_relationship_returns_relationship(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_create_relationship_returns_relationship(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.create_relationship = AsyncMock(
         return_value=GraphRelationship(
             id="rel-1",
@@ -118,7 +135,9 @@ def test_admin_create_relationship_returns_relationship(admin_api_client: TestCl
     )
 
 
-def test_admin_create_relationship_handles_failure(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_create_relationship_handles_failure(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.create_relationship = AsyncMock(side_effect=RuntimeError("invalid data"))
     payload = {
         "start_node_id": "node-1",
@@ -137,7 +156,9 @@ def test_admin_create_relationship_handles_failure(admin_api_client: TestClient,
     mock_neo4j_client.create_relationship.assert_awaited_once()
 
 
-def test_admin_delete_relationship_confirms_deletion(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_delete_relationship_confirms_deletion(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.delete_relationship = AsyncMock(return_value=True)
 
     response = admin_api_client.delete(
@@ -149,7 +170,9 @@ def test_admin_delete_relationship_confirms_deletion(admin_api_client: TestClien
     mock_neo4j_client.delete_relationship.assert_awaited_once_with("rel-1")
 
 
-def test_admin_delete_relationship_returns_404_when_missing(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_delete_relationship_returns_404_when_missing(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.delete_relationship = AsyncMock(return_value=False)
 
     response = admin_api_client.delete(
@@ -161,7 +184,9 @@ def test_admin_delete_relationship_returns_404_when_missing(admin_api_client: Te
     mock_neo4j_client.delete_relationship.assert_awaited_once_with("missing")
 
 
-def test_admin_import_nodes_tracks_failures(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_import_nodes_tracks_failures(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.create_node = AsyncMock(
         side_effect=[
             GraphNode(id="node-1", labels=["Policy"], properties={"name": "Alpha"}),
@@ -190,7 +215,9 @@ def test_admin_import_nodes_tracks_failures(admin_api_client: TestClient, mock_n
     assert first_call.kwargs == {"labels": ["Policy"], "properties": {"name": "Alpha"}}
 
 
-def test_admin_import_relationships_tracks_failures(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_import_relationships_tracks_failures(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.create_relationship = AsyncMock(
         side_effect=[
             GraphRelationship(
@@ -236,7 +263,9 @@ def test_admin_import_relationships_tracks_failures(admin_api_client: TestClient
     assert call_kwargs["end_node_id"] == "node-2"
 
 
-def test_admin_reindex_database_returns_summary(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_reindex_database_returns_summary(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.get_labels = AsyncMock(return_value=["Policy", "Entity"])
     mock_neo4j_client.execute_write = AsyncMock()
 
@@ -253,7 +282,9 @@ def test_admin_reindex_database_returns_summary(admin_api_client: TestClient, mo
     assert "Policy" in query
 
 
-def test_admin_reindex_database_handles_error(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_reindex_database_handles_error(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.get_labels = AsyncMock(side_effect=RuntimeError("neo4j offline"))
 
     response = admin_api_client.post(
@@ -266,7 +297,9 @@ def test_admin_reindex_database_handles_error(admin_api_client: TestClient, mock
     assert body["message"] == "neo4j offline"
 
 
-def test_admin_delete_orphans_returns_count(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_delete_orphans_returns_count(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.execute_write = AsyncMock(return_value=[{"deleted": 3}])
 
     response = admin_api_client.delete(
@@ -280,7 +313,9 @@ def test_admin_delete_orphans_returns_count(admin_api_client: TestClient, mock_n
     mock_neo4j_client.execute_write.assert_awaited_once()
 
 
-def test_admin_delete_orphans_handles_error(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_delete_orphans_handles_error(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.execute_write = AsyncMock(side_effect=RuntimeError("locked"))
 
     response = admin_api_client.delete(
@@ -293,7 +328,9 @@ def test_admin_delete_orphans_handles_error(admin_api_client: TestClient, mock_n
     assert body["message"] == "locked"
 
 
-def test_admin_health_returns_stats_when_healthy(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_health_returns_stats_when_healthy(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.ping = AsyncMock(return_value=True)
     mock_neo4j_client.get_stats = AsyncMock(
         return_value=GraphStats(
@@ -316,7 +353,9 @@ def test_admin_health_returns_stats_when_healthy(admin_api_client: TestClient, m
     mock_neo4j_client.get_stats.assert_awaited_once()
 
 
-def test_admin_health_reports_unhealthy_when_ping_fails(admin_api_client: TestClient, mock_neo4j_client) -> None:
+def test_admin_health_reports_unhealthy_when_ping_fails(
+    admin_api_client: TestClient, mock_neo4j_client
+) -> None:
     mock_neo4j_client.ping = AsyncMock(return_value=False)
     mock_neo4j_client.get_stats = AsyncMock()
 
@@ -344,7 +383,11 @@ def test_admin_health_reports_unhealthy_when_ping_fails(admin_api_client: TestCl
             {"start_node_id": "a", "end_node_id": "b", "type": "RELATES", "properties": {}},
         ),
         ("delete", "/api/admin/graph/relationships/rel-1", None),
-        ("post", "/api/admin/graph/import/nodes", {"nodes": [{"labels": ["Policy"], "properties": {}}]}),
+        (
+            "post",
+            "/api/admin/graph/import/nodes",
+            {"nodes": [{"labels": ["Policy"], "properties": {}}]},
+        ),
         (
             "post",
             "/api/admin/graph/import/relationships",

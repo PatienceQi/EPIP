@@ -36,7 +36,8 @@ class TenantMiddleware(BaseHTTPMiddleware):
         if any(path.startswith(prefix) for prefix in self._public_prefixes):
             return True
         # SPA fallback: non-API paths without file extensions are likely client routes
-        if self._allow_spa_fallback and not path.startswith("/api/") and "." not in path.split("/")[-1]:
+        last_segment = path.split("/")[-1]
+        if self._allow_spa_fallback and not path.startswith("/api/") and "." not in last_segment:
             return True
         return False
 

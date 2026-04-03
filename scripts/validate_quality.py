@@ -91,8 +91,7 @@ def evaluate_acceptance(
         )
     if completeness < thresholds.completeness:
         failures.append(
-            f"Data completeness {completeness:.2f} below target "
-            f"{thresholds.completeness:.2f}"
+            f"Data completeness {completeness:.2f} below target {thresholds.completeness:.2f}"
         )
 
     entity_score = _normalize_positive(entity_precision, thresholds.entity_precision)

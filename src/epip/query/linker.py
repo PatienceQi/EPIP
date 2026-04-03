@@ -86,9 +86,7 @@ class EntityLinker:
             record = next((item for item in candidates if item["name"] == best_name), None)
             node_id = str(record["id"]) if record else best_name
             node_name = record["name"] if record else best_name
-            alternatives = [
-                (name, score) for name, score in matches[1 : self.max_alternatives + 1]
-            ]
+            alternatives = [(name, score) for name, score in matches[1 : self.max_alternatives + 1]]
             linked.append(
                 LinkedEntity(
                     mention=mention,
@@ -129,9 +127,7 @@ class EntityLinker:
     ) -> list[dict[str, Any]]:
         if not entity_type:
             return list(catalog)
-        filtered = [
-            record for record in catalog if record.get("entity_type") == entity_type
-        ]
+        filtered = [record for record in catalog if record.get("entity_type") == entity_type]
         return filtered or list(catalog)
 
     async def _load_entity_catalog(self, kg_builder: KGBuilder) -> list[dict[str, Any]]:

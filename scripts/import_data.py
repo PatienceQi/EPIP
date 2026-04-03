@@ -9,10 +9,9 @@ import signal
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 from epip.config import LightRAGConfig
-from epip.core.kg_builder import InsertResult, KGBuilder
+from epip.core.kg_builder import KGBuilder
 
 PROGRESS_FILE = Path("data/lightrag/.import_progress.json")
 
@@ -136,7 +135,8 @@ async def process_single_file(
             else:
                 progress["completed"].append(file_key)
                 _save_progress(progress)
-                return True, f"OK: {result.entity_count} entities, {result.relation_count} relations"
+                msg = f"OK: {result.entity_count} entities, {result.relation_count} relations"
+                return True, msg
 
         except asyncio.CancelledError:
             # 被取消，不记录为失败
@@ -150,7 +150,7 @@ async def process_single_file(
         is_last_attempt = attempt == max_retries - 1
 
         if is_retryable and not is_last_attempt:
-            delay = min(2 ** attempt * 5, 60)
+            delay = min(2**attempt * 5, 60)
             print(
                 f"[retry] {file_path.name}: {last_error_type} "
                 f"(attempt {attempt + 1}/{max_retries}) - retrying in {delay}s"
@@ -182,7 +182,9 @@ async def main() -> None:
     parser.add_argument("--retry-timeout", action="store_true", help="仅重试超时的文件")
     parser.add_argument("--cooldown", type=int, default=3, help="文件间隔秒数 (default: 3)")
     parser.add_argument("--timeout", type=int, default=600, help="单文件超时秒数 (default: 600)")
-    parser.add_argument("--max-retries", type=int, default=5, help="单文件最大重试次数 (default: 5)")
+    parser.add_argument(
+        "--max-retries", type=int, default=5, help="单文件最大重试次数 (default: 5)"
+    )
     parser.add_argument("--status", action="store_true", help="仅显示当前进度状态")
     args = parser.parse_args()
 
@@ -228,8 +230,11 @@ async def main() -> None:
         print(f"  Cleared {retry_count} failed entries for retry")
     elif args.retry_timeout:
         # 仅重试超时的文件
-        timeout_files = [f for f, info in progress["failed"].items()
-                        if isinstance(info, dict) and info.get("type") == "timeout"]
+        timeout_files = [
+            f
+            for f, info in progress["failed"].items()
+            if isinstance(info, dict) and info.get("type") == "timeout"
+        ]
         for f in timeout_files:
             del progress["failed"][f]
         _save_progress(progress)
@@ -337,7 +342,7 @@ async def main() -> None:
     if builder:
         try:
             kg_stats = await builder.get_statistics()
-            print(f"\n  Knowledge Graph:")
+            print("\n  Knowledge Graph:")
             print(f"    Entities: {kg_stats.total_entities}")
             print(f"    Relations: {kg_stats.total_relations}")
         except Exception as e:
@@ -347,8 +352,11 @@ async def main() -> None:
 
     # 提示
     if progress["failed"]:
-        timeout_count = sum(1 for info in progress["failed"].values()
-                          if isinstance(info, dict) and info.get("type") == "timeout")
+        timeout_count = sum(
+            1
+            for info in progress["failed"].values()
+            if isinstance(info, dict) and info.get("type") == "timeout"
+        )
         if timeout_count > 0:
             print(f"\nTip: {timeout_count} files failed due to timeout.")
             print("     Run with --retry-timeout to retry them")

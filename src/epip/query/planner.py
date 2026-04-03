@@ -73,9 +73,7 @@ class QueryPlanner:
                 errors.append(f"duplicate step id detected: {step.step_id}")
             for dependency in step.depends_on:
                 if dependency not in seen_ids:
-                    errors.append(
-                        f"step {step.step_id} depends on unknown step {dependency}"
-                    )
+                    errors.append(f"step {step.step_id} depends on unknown step {dependency}")
                 if dependency == step.step_id:
                     errors.append(f"step {step.step_id} cannot depend on itself")
             seen_ids.add(step.step_id)
@@ -130,9 +128,7 @@ class QueryPlanner:
         if parsed.intent in (QueryIntent.RELATION, QueryIntent.PATH):
             params = {
                 "strategy": (
-                    "shortest_path"
-                    if parsed.intent == QueryIntent.PATH
-                    else "neighbor_lookup"
+                    "shortest_path" if parsed.intent == QueryIntent.PATH else "neighbor_lookup"
                 ),
                 "hops": 2 if parsed.intent == QueryIntent.RELATION else 4,
             }
@@ -159,9 +155,7 @@ class QueryPlanner:
 
         if parsed.intent in (QueryIntent.AGGREGATE, QueryIntent.COMPARE):
             params = {
-                "operation": "compare"
-                if parsed.intent == QueryIntent.COMPARE
-                else "aggregate",
+                "operation": "compare" if parsed.intent == QueryIntent.COMPARE else "aggregate",
                 "metric": "count",
             }
             step = QueryStep(

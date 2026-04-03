@@ -14,6 +14,7 @@ from collections.abc import Iterable, Sequence
 try:  # pragma: no cover - exercised indirectly through integration paths
     from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram, generate_latest
 except Exception:  # pragma: no cover - fallback only used when dependency is missing
+
     class CollectorRegistry:  # type: ignore[no-redef]
         """Minimal CollectorRegistry compatible with the Prometheus client API."""
 
@@ -131,6 +132,7 @@ except Exception:  # pragma: no cover - fallback only used when dependency is mi
                     label_str = f"{{{encoded}}}"
                 lines.append(f"{metric.name}{label_str} {value}")
         return "\n".join(lines).encode("utf-8")
+
 
 DEFAULT_DOCS = {
     "epip_requests_total": "Total number of EPIP API requests",

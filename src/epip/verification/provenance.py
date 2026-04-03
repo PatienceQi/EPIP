@@ -51,9 +51,7 @@ class ProvenanceService:
             if chain
             else conclusion_node.confidence
         )
-        evidence_count = sum(
-            1 for node_id in chain if node_map[node_id].node_type == "observation"
-        )
+        evidence_count = sum(1 for node_id in chain if node_map[node_id].node_type == "observation")
 
         # Fetch KG context opportunistically to warm caches; ignored if unavailable.
         try:

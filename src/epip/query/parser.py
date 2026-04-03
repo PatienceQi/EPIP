@@ -280,9 +280,7 @@ class QueryParser:
                 if span in seen_spans:
                     continue
                 seen_spans.add(span)
-                entity_type = (
-                    "ORGANIZATION" if pattern is _CAPITALIZED_PATTERN else "ENTITY"
-                )
+                entity_type = "ORGANIZATION" if pattern is _CAPITALIZED_PATTERN else "ENTITY"
                 mentions.append(
                     EntityMention(text=text, entity_type=entity_type, start=start, end=end)
                 )

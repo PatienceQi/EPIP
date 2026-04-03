@@ -79,9 +79,7 @@ class CypherGenerator:
         if intent is QueryIntent.PATH and len(aliases) >= 2:
             max_hops = self._extract_hops(plan)
             extra_clauses.append(self.path_query(aliases[0], aliases[-1], max_hops))
-            return_clause = (
-                "RETURN path, nodes(path) AS nodes, relationships(path) AS relations"
-            )
+            return_clause = "RETURN path, nodes(path) AS nodes, relationships(path) AS relations"
         elif intent is QueryIntent.RELATION and len(aliases) >= 2:
             relation_type = self._extract_relation(plan)
             extra_clauses.append(self.traverse_relation(aliases[0], aliases[-1], relation_type))

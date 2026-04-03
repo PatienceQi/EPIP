@@ -223,55 +223,63 @@ def build_markdown_report(metrics: PerformanceMetrics) -> str:
     throughput = metrics.throughput
     cache = metrics.cache
     lines = ["# EPIP Performance Benchmark", ""]
-    lines.extend([
-        "## Latency",
-        "",
-        "| Metric | Value |",
-        "| --- | --- |",
-        f"| Total Queries | {throughput.total_queries} |",
-        f"| p50 (ms) | {metrics.latency.p50:.2f} |",
-        f"| p95 (ms) | {metrics.latency.p95:.2f} |",
-        f"| p99 (ms) | {metrics.latency.p99:.2f} |",
-        f"| Mean (ms) | {metrics.latency.mean:.2f} |",
-        f"| Min (ms) | {metrics.latency.min:.2f} |",
-        f"| Max (ms) | {metrics.latency.max:.2f} |",
-    ])
+    lines.extend(
+        [
+            "## Latency",
+            "",
+            "| Metric | Value |",
+            "| --- | --- |",
+            f"| Total Queries | {throughput.total_queries} |",
+            f"| p50 (ms) | {metrics.latency.p50:.2f} |",
+            f"| p95 (ms) | {metrics.latency.p95:.2f} |",
+            f"| p99 (ms) | {metrics.latency.p99:.2f} |",
+            f"| Mean (ms) | {metrics.latency.mean:.2f} |",
+            f"| Min (ms) | {metrics.latency.min:.2f} |",
+            f"| Max (ms) | {metrics.latency.max:.2f} |",
+        ]
+    )
 
-    lines.extend([
-        "",
-        "## Throughput",
-        "",
-        "| Metric | Value |",
-        "| --- | --- |",
-        f"| Concurrency | {throughput.concurrency} |",
-        f"| Duration (s) | {throughput.duration_s:.2f} |",
-        f"| Queries per Second | {throughput.qps:.2f} |",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Throughput",
+            "",
+            "| Metric | Value |",
+            "| --- | --- |",
+            f"| Concurrency | {throughput.concurrency} |",
+            f"| Duration (s) | {throughput.duration_s:.2f} |",
+            f"| Queries per Second | {throughput.qps:.2f} |",
+        ]
+    )
 
-    lines.extend([
-        "",
-        "## Concurrent Queries",
-        "",
-        "| Metric | Value |",
-        "| --- | --- |",
-        f"| Users | {metrics.concurrency_level} |",
-        f"| p95 (ms) | {metrics.concurrency_stats.p95:.2f} |",
-        f"| p99 (ms) | {metrics.concurrency_stats.p99:.2f} |",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Concurrent Queries",
+            "",
+            "| Metric | Value |",
+            "| --- | --- |",
+            f"| Users | {metrics.concurrency_level} |",
+            f"| p95 (ms) | {metrics.concurrency_stats.p95:.2f} |",
+            f"| p99 (ms) | {metrics.concurrency_stats.p99:.2f} |",
+        ]
+    )
 
-    lines.extend([
-        "",
-        "## Cache Performance",
-        "",
-        "| Metric | Value |",
-        "| --- | --- |",
-        f"| Cold p95 (ms) | {cache.cold_stats.p95:.2f} |",
-        f"| Warm p95 (ms) | {cache.warm_stats.p95:.2f} |",
-        f"| Cold Duration (s) | {cache.cold_duration_s:.2f} |",
-        f"| Warm Duration (s) | {cache.warm_duration_s:.2f} |",
-        f"| Cache Hit Rate | {cache.hit_rate:.2%} |",
-        f"| Improvement Factor | {cache.improvement_factor:.2f}x |",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Cache Performance",
+            "",
+            "| Metric | Value |",
+            "| --- | --- |",
+            f"| Cold p95 (ms) | {cache.cold_stats.p95:.2f} |",
+            f"| Warm p95 (ms) | {cache.warm_stats.p95:.2f} |",
+            f"| Cold Duration (s) | {cache.cold_duration_s:.2f} |",
+            f"| Warm Duration (s) | {cache.warm_duration_s:.2f} |",
+            f"| Cache Hit Rate | {cache.hit_rate:.2%} |",
+            f"| Improvement Factor | {cache.improvement_factor:.2f}x |",
+        ]
+    )
     return "\n".join(lines)
 
 

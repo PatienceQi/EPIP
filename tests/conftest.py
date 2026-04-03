@@ -26,8 +26,8 @@ from epip.core.data_processor import DataProcessor
 from epip.core.hallucination import HallucinationGuard
 from epip.core.kg_builder import KGStats, KnowledgeGraphBuilder
 from epip.core.query_engine import QueryEngine
-from epip.main import app
 from epip.db.neo4j_client import Neo4jClient
+from epip.main import app
 from epip.query.linker import EntityLinker, LinkedEntity
 from epip.query.parser import EntityMention, ParsedQuery, QueryIntent, QueryParser
 from epip.query.planner import QueryPlan, QueryPlanner, QueryStep
@@ -99,13 +99,17 @@ def _test_client_dependencies() -> dict[str, object]:
     mock_parser.parse = AsyncMock(return_value=parsed_query)
 
     mock_linker = MagicMock(spec=EntityLinker)
-    mock_linker.link = AsyncMock(return_value=[LinkedEntity(
-        mention=parsed_query.entities[0],
-        kg_node_id="42",
-        kg_node_name="Policy Alpha",
-        confidence=0.91,
-        alternatives=[],
-    )])
+    mock_linker.link = AsyncMock(
+        return_value=[
+            LinkedEntity(
+                mention=parsed_query.entities[0],
+                kg_node_id="42",
+                kg_node_name="Policy Alpha",
+                confidence=0.91,
+                alternatives=[],
+            )
+        ]
+    )
 
     plan = QueryPlan(
         query_id="test",

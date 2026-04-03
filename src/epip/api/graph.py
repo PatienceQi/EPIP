@@ -7,7 +7,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
-from epip.admin import Tenant, TenantContext
+from epip.admin import TenantContext
 from epip.api.dependencies import get_neo4j_client
 from epip.api.schemas.graph import (
     CypherExecuteRequest,
@@ -101,7 +101,9 @@ async def get_node_relationships(
     neo4j: Neo4jClient = Depends(get_neo4j_client),
 ) -> list[GraphRelationshipResponse]:
     """Get relationships for a node."""
-    relationships = await neo4j.get_node_relationships(node_id, direction=direction, rel_type=rel_type)
+    relationships = await neo4j.get_node_relationships(
+        node_id, direction=direction, rel_type=rel_type
+    )
     return [_relationship_to_response(r) for r in relationships]
 
 

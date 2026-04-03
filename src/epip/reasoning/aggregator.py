@@ -102,9 +102,7 @@ class ResultAggregator:
         path_weight = weights.get("path_length", 0.0)
 
         def score(result: RankedResult) -> float:
-            coverage_score = (
-                len(result.source_queries) / max_sources if max_sources else 0.0
-            )
+            coverage_score = len(result.source_queries) / max_sources if max_sources else 0.0
             path_score = 1.0 / (1 + max(result.path_length, 0))
             return (
                 confidence_weight * result.confidence

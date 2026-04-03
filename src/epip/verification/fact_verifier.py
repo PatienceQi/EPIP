@@ -191,11 +191,8 @@ class FactVerifier:
             "Summarize the verification outcome in 1-2 sentences.\n"
             f"Fact: {fact.content}\n"
             f"Status: {status.value}\n"
-            f"Supporting evidence: "
-            + "; ".join(ev.content for ev in evidences[:3])
-            + "\n"
-            "Conflicts: "
-            + ("; ".join(ev.content for ev in conflicts[:3]) or "None")
+            f"Supporting evidence: " + "; ".join(ev.content for ev in evidences[:3]) + "\n"
+            "Conflicts: " + ("; ".join(ev.content for ev in conflicts[:3]) or "None")
         )
         try:
             response = await self._llm_backend.generate(

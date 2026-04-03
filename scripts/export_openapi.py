@@ -33,9 +33,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Export OpenAPI specification")
     parser.add_argument(
-        "--output", "-o",
-        default="openapi.json",
-        help="Output file path (default: openapi.json)"
+        "--output", "-o", default="openapi.json", help="Output file path (default: openapi.json)"
     )
     args = parser.parse_args()
 

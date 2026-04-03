@@ -51,8 +51,10 @@ async def _execute(args: argparse.Namespace) -> Path:
 
     print("[Relations]")
     print(f"Total relations: {report.total_relations}")
-    print(f"Low confidence relations (<{relation_config.confidence_threshold}): "
-          f"{report.low_confidence_count}")
+    print(
+        f"Low confidence relations (<{relation_config.confidence_threshold}): "
+        f"{report.low_confidence_count}"
+    )
     print(f"Average confidence: {report.average_confidence:.2f}")
     print(f"Markdown exported to: {report_path}")
 
