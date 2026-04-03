@@ -3,7 +3,7 @@ name: CD
 on:
   push:
     branches:
-      - main
+      - master
   repository_dispatch:
     types:
       - trigger-cd
@@ -40,7 +40,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=raw,value=${{ github.event.client_payload.tag }},enable=${{ github.event_name == 'repository_dispatch' && github.event.client_payload.tag != '' }}
 
       - name: Build and push multi-architecture image
